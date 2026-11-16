@@ -1,4 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="7" fill="#fafaf8"/>
-  <path d="M7 22V10m8 12V10m-8 6h8m4 6 4-12 4 12m-7-3h6" fill="none" stroke="#232321" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 224 224">
+  <title>Вне рамки</title>
+  <style>
+    .mark { fill: #111111; }
+    @media (prefers-color-scheme: dark) {
+      .mark { fill: #fafaf8; }
+    }
+  </style>
+  <g class="mark" transform="translate(-18 -8)">
+    <path d="M47 53H135V84H78V180H174V122H205V211H47Z"/>
+    <rect x="159" y="30" width="54" height="54"/>
+  </g>
 </svg>
