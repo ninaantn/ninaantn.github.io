@@ -1,9 +1,9 @@
 :root {
   --ruler-ink: light-dark(#b3b3b3, #777777);
   --ruler-border: light-dark(#e5e5e5, #333333);
-  --ruler-accent: light-dark(#ff8a80, #d97b73);
-  --ruler-active: light-dark(#0d99ff, #55b5ff);
-  --ruler-coordinate: light-dark(#ff3b15, #ff7058);
+  --ruler-accent: light-dark(#e5e5e5, #333333);
+  --ruler-active: #4cee8f;
+  --ruler-coordinate: var(--ruler-active);
   --ruler-height: 22px;
 }
 
@@ -228,4 +228,14 @@ body:has(.measure-rail--y:hover) .guide-line--y::after,
 
 @media (prefers-reduced-motion: reduce) {
   .measure-rail::after, .guide-line--y::after { transition: none; }
+}
+
+/* Highlight the complete guide when its rail or ruler is hovered. */
+body:has(.measure-rail--x:hover, .portfolio-ruler:hover) .ruler-index--x,
+body:has(.measure-rail--x:hover, .portfolio-ruler:hover) .measure-rail--x::before,
+body:has(.measure-rail--x:hover, .portfolio-ruler:hover) .measure-rail--x::after,
+body:has(.measure-rail--y:hover, .portfolio-ruler-vertical:hover) .ruler-index--y,
+body:has(.measure-rail--y:hover, .portfolio-ruler-vertical:hover) .guide-line--y,
+body:has(.measure-rail--y:hover, .portfolio-ruler-vertical:hover) .guide-line--y::after {
+  background: var(--ruler-active);
 }

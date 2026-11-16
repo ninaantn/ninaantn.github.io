@@ -33,7 +33,9 @@
     const thickness = parseFloat(getComputedStyle(root).getPropertyValue('--ruler-height'));
     const width = root.clientWidth;
     const height = window.innerHeight;
-    const originY = bounds.top + window.scrollY;
+    const originX = bounds.left - 20;
+    const originScreenY = bounds.top - 20;
+    const originY = originScreenY + window.scrollY;
     // Keep the horizontal drag cue just before the theme control on every viewport.
     const controlsLeft = controls.getBoundingClientRect().left;
     root.style.setProperty('--guide-hint-x', `${Math.max(thickness + 16, controlsLeft - 24)}px`);
@@ -42,9 +44,9 @@
       const vertical = axis.key === 'y';
       const start = vertical ? thickness : 0;
       const end = vertical ? height : width;
-      axis.origin = vertical ? bounds.top : bounds.left;
-      axis.minimum = Math.ceil(thickness - (vertical ? originY : bounds.left));
-      axis.maximum = Math.floor(vertical ? root.scrollHeight - originY - 1 : width - bounds.left - 1);
+      axis.origin = vertical ? originScreenY : originX;
+      axis.minimum = Math.ceil(thickness - (vertical ? originY : originX));
+      axis.maximum = Math.floor(vertical ? root.scrollHeight - originY - 1 : width - originX - 1);
       axis.value = Math.max(axis.minimum, Math.min(axis.maximum, axis.value));
       axis.screen = axis.origin + axis.value;
       const visible = axis.screen >= thickness && axis.screen < end;
