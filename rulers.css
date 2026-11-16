@@ -1,0 +1,231 @@
+:root {
+  --ruler-ink: light-dark(#b3b3b3, #777777);
+  --ruler-border: light-dark(#e5e5e5, #333333);
+  --ruler-accent: light-dark(#ff8a80, #d97b73);
+  --ruler-active: light-dark(#0d99ff, #55b5ff);
+  --ruler-coordinate: light-dark(#ff3b15, #ff7058);
+  --ruler-height: 22px;
+}
+
+.portfolio-ruler,
+.portfolio-ruler-vertical,
+.ruler-corner,
+.measure-rail {
+  position: fixed;
+  z-index: 20;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.portfolio-ruler,
+.portfolio-ruler-vertical,
+.ruler-corner {
+  background: var(--background);
+  color: var(--ruler-ink);
+}
+
+.portfolio-ruler,
+.portfolio-ruler-vertical,
+.measure-rail { touch-action: none; }
+
+.portfolio-ruler {
+  inset: 0 0 auto;
+  height: var(--ruler-height);
+  border-bottom: 1px solid var(--ruler-border);
+  cursor: ew-resize;
+}
+
+.portfolio-ruler-vertical {
+  inset: var(--ruler-height) auto 0 0;
+  width: var(--ruler-height);
+  border-right: 1px solid var(--ruler-border);
+  overflow: hidden;
+  cursor: ns-resize;
+}
+
+.ruler-scale { position: absolute; inset: 0; overflow: hidden; }
+
+.ruler-tick {
+  position: absolute;
+  left: var(--tick-position);
+  bottom: 0;
+  width: 1px;
+  height: 4px;
+  background: var(--ruler-ink);
+}
+
+.ruler-number {
+  position: absolute;
+  bottom: 7px;
+  transform: translateX(-50%);
+  font: 400 10px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ruler-tick--vertical {
+  top: var(--tick-position);
+  right: 0;
+  bottom: auto;
+  left: auto;
+  width: 4px;
+  height: 1px;
+}
+
+.ruler-tick--vertical .ruler-number {
+  top: 0;
+  bottom: auto;
+  left: -8px;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.ruler-corner {
+  z-index: 22;
+  inset: 0 auto auto 0;
+  width: var(--ruler-height);
+  height: var(--ruler-height);
+  border-right: 1px solid var(--ruler-border);
+  border-bottom: 1px solid var(--ruler-border);
+  pointer-events: none;
+}
+
+.ruler-index { position: absolute; background: var(--ruler-accent); pointer-events: none; }
+.ruler-index--x { inset: 0 auto 0 var(--guide-x); width: 1px; }
+.ruler-index--y { inset: var(--guide-y-on-ruler) 0 auto; height: 1px; }
+
+.measure-rail--x {
+  inset: var(--ruler-height) auto 0 var(--guide-hit-x);
+  width: 25px;
+  cursor: ew-resize;
+}
+
+.measure-rail--y {
+  inset: var(--guide-hit-y) 0 auto var(--ruler-height);
+  height: 25px;
+  cursor: ns-resize;
+}
+
+.measure-rail--x::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 var(--guide-hit-offset-x);
+  width: 1px;
+  background: var(--ruler-accent);
+}
+
+.guide-line--y {
+  position: fixed;
+  inset: var(--guide-y) 0 auto;
+  z-index: 23;
+  height: 1px;
+  background: var(--ruler-accent);
+  pointer-events: none;
+}
+
+.portfolio-ruler:focus-visible,
+.portfolio-ruler-vertical:focus-visible { outline: none; }
+
+.ruler-active-value {
+  position: absolute;
+  color: var(--ruler-coordinate);
+  background: var(--background);
+  font: 400 10px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.ruler-active-value--x { top: 4px; left: var(--guide-label-x); }
+.ruler-active-value--y {
+  top: var(--guide-label-y);
+  left: 10px;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+[data-ruler-dragging="x"] .ruler-index--x,
+[data-ruler-dragging="x"] .measure-rail--x::before,
+.portfolio-ruler:focus-visible .ruler-index--x,
+.portfolio-ruler:focus-visible ~ .measure-rail--x::before,
+[data-ruler-dragging="y"] .ruler-index--y,
+[data-ruler-dragging="y"] .guide-line--y,
+.portfolio-ruler-vertical:focus-visible .ruler-index--y,
+.portfolio-ruler-vertical:focus-visible ~ .guide-line--y { background: var(--ruler-active); }
+
+[data-ruler-dragging="x"] .ruler-active-value--x,
+.portfolio-ruler:focus-visible .ruler-active-value,
+[data-ruler-dragging="y"] .ruler-active-value--y,
+.portfolio-ruler-vertical:focus-visible .ruler-active-value { visibility: visible; }
+
+[data-ruler-dragging="x"] .portfolio-ruler .ruler-number--near-guide,
+.portfolio-ruler:focus-visible .ruler-number--near-guide,
+[data-ruler-dragging="y"] .portfolio-ruler-vertical .ruler-number--near-guide,
+.portfolio-ruler-vertical:focus-visible .ruler-number--near-guide { visibility: hidden; }
+
+[data-rulers-ready] .page-controls { z-index: 21; border-radius: 24px; background: var(--background); }
+[data-rulers-ready] .page a { position: relative; z-index: 21; }
+[data-rulers-ready] .page { --page-top: clamp(72px, 10vh, 100px); }
+[data-rulers-ready] .job { scroll-margin-top: calc(var(--ruler-height) + 22px); }
+
+[data-ruler-dragging],
+[data-ruler-dragging] * { -webkit-user-select: none !important; user-select: none !important; }
+[data-ruler-dragging="x"],
+[data-ruler-dragging="x"] * { cursor: ew-resize !important; }
+[data-ruler-dragging="y"],
+[data-ruler-dragging="y"] * { cursor: ns-resize !important; }
+
+@media (max-width: 768px) {
+  [data-rulers-ready] .page {
+    --page-top: 74px;
+    width: min(calc(100% - 80px), 550px);
+    padding-bottom: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  [data-rulers-ready] .page {
+    --page-top: 67px;
+    width: calc(100% - 64px);
+    margin-inline: 44px 20px;
+  }
+}
+
+/* Small directional cues sit in the margins, clear of the reading column. */
+.measure-rail--x::after,
+.guide-line--y::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 12px;
+  background: var(--ruler-accent);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 12'%3E%3Cpath d='M6 3 3 6l3 3M16 3l3 3-3 3' fill='none' stroke='black' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 150ms ease, background-color 150ms ease;
+}
+
+.measure-rail--x::after {
+  left: var(--guide-hit-offset-x);
+  top: 26px;
+  transform: translate(-50%, -50%);
+}
+
+.guide-line--y::after {
+  left: var(--guide-hint-x);
+  top: 0;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.measure-rail--x:hover::after,
+body:has(.measure-rail--y:hover) .guide-line--y::after,
+[data-ruler-dragging="x"] .measure-rail--x::after,
+[data-ruler-dragging="y"] .guide-line--y::after,
+.portfolio-ruler:focus-visible ~ .measure-rail--x::after,
+.portfolio-ruler-vertical:focus-visible ~ .guide-line--y::after {
+  background: var(--ruler-active);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .measure-rail::after, .guide-line--y::after { transition: none; }
+}
