@@ -366,17 +366,17 @@ h3, h4 {
   .publication-list a { transition: none; }
 }
 
-.ai-highlight {
-  padding: .1em .3em;
+.text-marker {
   color: var(--ink);
-  background: light-dark(#f2e7ff, #38294a);
-  background-image: linear-gradient(100deg,
-    light-dark(#ffdcea, #4e2843),
-    light-dark(#fff0cd, #443420),
-    light-dark(#ddf7e7, #203c33),
-    light-dark(#def0ff, #203953),
-    light-dark(#efe1ff, #402b58));
-  white-space: nowrap;
+  display:inline;
+  --color:#4cee8f;
+  margin:-0.14219155729359859em -0.2162463798678964em -0.1578084427064014em -0.2837536201321036em;
+  padding:0.14219155729359859em 0.2162463798678964em 0.1578084427064014em 0.2837536201321036em;
+  border-radius:0.5em 0.3em;
+  background:transparent;
+  box-decoration-break:clone;
+  -webkit-box-decoration-break:clone;
+  background-image:linear-gradient( 83.57189267496369deg, color-mix(in srgb, var(--color), transparent 50%), color-mix(in srgb, var(--color), transparent 85%) 4%, color-mix(in srgb, var(--color), transparent 64%) 96%, color-mix(in srgb, var(--color), transparent 30%) );
 }
 
 .stages {
@@ -464,15 +464,4 @@ h3, h4 {
     --number-width: 22px;
     --column-gap: 6px;
   }
-}
-
-.ai-highlight--purple {
-  background-image: linear-gradient(110deg, light-dark(#d8c2f7, #7954aa), var(--background));
-}
-
-.telemost-highlight {
-  background-image: linear-gradient(110deg, light-dark(#a7ebbc, #225e3e), var(--background));
-  white-space: normal;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
 }
