@@ -42,7 +42,8 @@
 
     for (const axis of axes) {
       const vertical = axis.key === 'y';
-      const start = vertical ? thickness : 0;
+      axis.ruler.hidden = false;
+      const start = vertical ? axis.ruler.getBoundingClientRect().top : 0;
       const end = vertical ? height : width;
       axis.origin = vertical ? originScreenY : originX;
       axis.minimum = Math.ceil(thickness - (vertical ? originY : originX));
@@ -50,7 +51,6 @@
       axis.value = Math.max(axis.minimum, Math.min(axis.maximum, axis.value));
       axis.screen = axis.origin + axis.value;
       const visible = axis.screen >= thickness && axis.screen < end;
-      axis.ruler.hidden = false;
       axis.rail.hidden = !visible;
       if (vertical) horizontalLine.hidden = !visible;
       axis.marker.hidden = !visible;
@@ -62,13 +62,13 @@
       const hitStart = Math.max(thickness, Math.min(end - 25, axis.screen - 12));
       root.style.setProperty(`--guide-hit-${axis.key}`, `${hitStart}px`);
       root.style.setProperty(`--guide-hit-offset-${axis.key}`, `${axis.screen - hitStart}px`);
-      if (vertical) root.style.setProperty('--guide-y-on-ruler', `${axis.screen - thickness}px`);
+      if (vertical) root.style.setProperty('--guide-y-on-ruler', `${axis.screen - start}px`);
 
       const labelWidth = axis.readout.offsetWidth;
       let labelStart = axis.screen + 7;
       if (labelStart + labelWidth > end - 6) labelStart = axis.screen - labelWidth - 7;
       labelStart = Math.max(thickness + 6, labelStart);
-      const labelPosition = vertical ? labelStart + labelWidth / 2 - thickness : labelStart;
+      const labelPosition = vertical ? labelStart + labelWidth / 2 - start : labelStart;
       root.style.setProperty(`--guide-label-${axis.key}`, `${labelPosition}px`);
 
       const ticks = document.createDocumentFragment();

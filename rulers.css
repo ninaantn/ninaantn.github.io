@@ -184,9 +184,29 @@
 
 @media (max-width: 480px) {
   [data-rulers-ready] .page {
-    --page-top: 67px;
+    --page-top: 8px;
     width: calc(100% - 64px);
     margin-inline: 44px 20px;
+  }
+
+  .portfolio-ruler,
+  .ruler-corner,
+  .measure-rail--x {
+    display: none;
+  }
+
+  .portfolio-ruler-vertical { inset-block-start: 0; }
+
+  [data-rulers-ready] .job { scroll-margin-top: 22px; }
+
+  .measure-rail--y,
+  .guide-line--y {
+    display: none;
+  }
+
+  [data-ruler-dragging="y"] .guide-line--y:not([hidden]),
+  body:has(.portfolio-ruler-vertical:focus-visible) .guide-line--y:not([hidden]) {
+    display: block;
   }
 }
 
