@@ -32,6 +32,7 @@ body { margin: 0; }
 
 .page {
   --page-top: clamp(52px, 9vh, 96px);
+  --topbar-offset: calc(11.475px - 22px);
   position: relative;
   width: min(calc(100% - 64px), 1176px);
   margin-inline: auto;
@@ -44,11 +45,39 @@ body { margin: 0; }
   margin-inline: auto;
 }
 
-.page-controls {
+.page-topbar {
   position: absolute;
-  inset-block-start: calc(var(--page-top) + 11.475px - 22px);
-  inset-inline-end: 0;
+  inset-block-start: calc(var(--page-top) + var(--topbar-offset));
+  inset-inline: -12px 0;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.page-brand,
+.page-controls { pointer-events: auto; }
+
+.page-controls {
+  display: flex;
+}
+
+.page-logo-link {
+  display: grid;
+  place-items: center start;
+  inline-size: 44px;
+  block-size: 44px;
+  padding-inline-start: 12px;
+  border-radius: 50%;
+  color: var(--quiet);
+  text-decoration: none;
+}
+
+.page-logo {
+  display: block;
+  inline-size: 14px;
+  block-size: 15px;
+  fill: currentColor;
 }
 
 .theme-toggle {
@@ -73,13 +102,16 @@ body { margin: 0; }
 
 
 @media (hover: hover) {
+  .page-logo-link:hover,
   .theme-toggle:hover {
     color: var(--ink);
   }
 }
 
+.page-logo-link:active,
 .theme-toggle:active { color: var(--ink); }
 
+.page-logo-link:focus-visible,
 .theme-toggle:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
@@ -448,7 +480,7 @@ h3, h4 {
 @media (max-width: 860px) {
   .page { width: min(calc(100% - 48px), 550px); }
 
-  .intro h1 { padding-inline-end: 48px; }
+  .intro h1 { padding-inline: 32px 48px; }
 
   .experience { margin-block-start: 28px; }
 }
@@ -459,6 +491,13 @@ h3, h4 {
     width: calc(100% - 40px);
   }
 
+  .page-topbar {
+    position: static;
+    margin-block: var(--topbar-offset) 16px;
+    margin-inline-start: -12px;
+  }
+
+  .intro h1 { padding-inline: 0; }
 
   .stage {
     --number-width: 22px;
