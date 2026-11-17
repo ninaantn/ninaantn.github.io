@@ -340,11 +340,14 @@ h4 { font-weight: 630; }
   white-space: nowrap;
 }
 
-.job-role {
+.job-role,
+.job-detail {
   margin-top: 2px;
-  color: var(--quiet);
   font-size: 14px;
 }
+
+.job-role { color: var(--quiet); }
+.job-detail { color: var(--ink); }
 
 .job-description,
 .job-publications { font-size: 14px; }
