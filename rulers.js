@@ -177,4 +177,18 @@
   window.addEventListener('scroll', scheduleRender, { passive: true });
   document.fonts.ready.then(scheduleRender);
   render();
+
+  if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    // Tie the guides to the first scale reveal, even if a guide later scrolls back into view.
+    root.dataset.drawingGuides = '';
+    const endDrawing = () => {
+      delete root.dataset.drawingGuides;
+      document.removeEventListener('pointerdown', endDrawing, true);
+      document.removeEventListener('focusin', endDrawing, true);
+    };
+    document.addEventListener('pointerdown', endDrawing, true);
+    document.addEventListener('focusin', endDrawing, true);
+    const reveals = axes.flatMap(axis => axis.scale.getAnimations());
+    Promise.allSettled(reveals.map(animation => animation.finished)).then(endDrawing);
+  }
 })();

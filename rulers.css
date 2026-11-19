@@ -31,19 +31,66 @@
 .portfolio-ruler {
   inset: 0 0 auto;
   height: var(--ruler-height);
-  border-bottom: 1px solid var(--ruler-border);
   cursor: ew-resize;
 }
 
 .portfolio-ruler-vertical {
   inset: var(--ruler-height) auto 0 0;
   width: var(--ruler-height);
-  border-right: 1px solid var(--ruler-border);
   overflow: hidden;
   cursor: ns-resize;
 }
 
 .ruler-scale { position: absolute; inset: 0; overflow: hidden; }
+.portfolio-ruler .ruler-scale { border-bottom: 1px solid var(--ruler-border); }
+.portfolio-ruler-vertical .ruler-scale { border-right: 1px solid var(--ruler-border); }
+
+/* Reveal the artwork inside each slider so its full hit area is live from the start. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-rulers-ready] .ruler-scale {
+    animation: draw-ruler 720ms ease-out both;
+  }
+
+  [data-drawing-guides] .measure-rail--x::before {
+    transform-origin: top;
+    animation: draw-guide-y 720ms ease-out;
+  }
+  [data-drawing-guides] .guide-line--y {
+    transform-origin: left;
+    animation: draw-guide-x 720ms ease-out;
+  }
+
+  @keyframes draw-guide-y {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+  @keyframes draw-guide-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  .portfolio-ruler {
+    --ruler-start: inset(0 100% 0 0);
+  }
+  .portfolio-ruler-vertical { --ruler-start: inset(0 0 100% 0); }
+
+  [data-drawing-guides] .measure-rail--x::after,
+  [data-drawing-guides] .guide-line--y::after {
+    animation: flash-guide-arrow 720ms ease-in-out;
+  }
+
+  [data-ruler-dragging] .ruler-scale,
+  [role="slider"]:focus .ruler-scale { clip-path: inset(0) !important; }
+
+  @keyframes draw-ruler {
+    from { clip-path: var(--ruler-start); }
+    to { clip-path: inset(0); }
+  }
+  @keyframes flash-guide-arrow {
+    0%, 32%, 100% { background-color: var(--ruler-accent); }
+    54%, 76% { background-color: var(--ruler-active); }
+  }
+}
 
 .ruler-tick {
   position: absolute;
@@ -205,6 +252,7 @@
   }
 
   [data-ruler-dragging="y"] .guide-line--y:not([hidden]),
+  [data-drawing-guides] .guide-line--y:not([hidden]),
   body:has(.portfolio-ruler-vertical:focus-visible) .guide-line--y:not([hidden]) {
     display: block;
   }
