@@ -47,17 +47,20 @@
 
 /* Reveal the artwork inside each slider so its full hit area is live from the start. */
 @media (prefers-reduced-motion: no-preference) {
-  [data-rulers-ready] .ruler-scale {
-    animation: draw-ruler 720ms ease-out both;
+  [data-drawing-guides] {
+    --guide-draw-duration: 2.4s;
+  }
+  [data-drawing-guides] .ruler-scale {
+    animation: draw-ruler var(--guide-draw-duration) ease-in-out both;
   }
 
   [data-drawing-guides] .measure-rail--x::before {
     transform-origin: top;
-    animation: draw-guide-y 720ms ease-out;
+    animation: draw-guide-y var(--guide-draw-duration) ease-in-out;
   }
   [data-drawing-guides] .guide-line--y {
     transform-origin: left;
-    animation: draw-guide-x 720ms ease-out;
+    animation: draw-guide-x var(--guide-draw-duration) ease-in-out;
   }
 
   @keyframes draw-guide-y {
@@ -76,7 +79,15 @@
 
   [data-drawing-guides] .measure-rail--x::after,
   [data-drawing-guides] .guide-line--y::after {
-    animation: flash-guide-arrow 720ms ease-in-out;
+    animation: flash-guide-arrow var(--guide-draw-duration) ease-in-out;
+  }
+
+  [data-drawing-guides="pending"] .ruler-scale,
+  [data-drawing-guides="pending"] .measure-rail--x::before,
+  [data-drawing-guides="pending"] .guide-line--y,
+  [data-drawing-guides="pending"] .measure-rail--x::after,
+  [data-drawing-guides="pending"] .guide-line--y::after {
+    animation-play-state: paused;
   }
 
   [data-ruler-dragging] .ruler-scale,

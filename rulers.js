@@ -25,6 +25,28 @@
   });
   let frame = 0;
   let drag = null;
+  let revealFrame = 0;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function endDrawing() {
+    cancelAnimationFrame(revealFrame);
+    delete root.dataset.drawingGuides;
+  }
+
+  function revealGuides() {
+    if (document.hidden || reducedMotion.matches || drag) {
+      endDrawing();
+      return;
+    }
+    if (root.hasAttribute('data-drawing-guides')) return;
+    root.dataset.drawingGuides = 'pending';
+    // Paint the starting positions in the visible tab before advancing the animations.
+    revealFrame = requestAnimationFrame(() => {
+      revealFrame = requestAnimationFrame(() => {
+        root.dataset.drawingGuides = 'playing';
+      });
+    });
+  }
 
   // Guides use document coordinates. Their positions never affect page layout.
   function render() {
@@ -126,6 +148,7 @@
     for (const target of [axis.ruler, axis.rail]) {
       target.addEventListener('pointerdown', event => {
         if (!event.isPrimary || event.button !== 0 || drag) return;
+        endDrawing();
         event.preventDefault();
         axis.ruler.focus({ preventScroll: true });
         drag = { id: event.pointerId, target, offset: target === axis.rail ? coordinate(event) - axis.screen : 0 };
@@ -165,6 +188,7 @@
         Home: visibleMinimum, End: visibleMaximum, '0': 0
       };
       if (!(event.key in values)) return;
+      endDrawing();
       event.preventDefault();
       setValue(axis, values[event.key]);
     });
@@ -178,17 +202,15 @@
   document.fonts.ready.then(scheduleRender);
   render();
 
-  if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-    // Tie the guides to the first scale reveal, even if a guide later scrolls back into view.
-    root.dataset.drawingGuides = '';
-    const endDrawing = () => {
-      delete root.dataset.drawingGuides;
-      document.removeEventListener('pointerdown', endDrawing, true);
-      document.removeEventListener('focusin', endDrawing, true);
-    };
-    document.addEventListener('pointerdown', endDrawing, true);
-    document.addEventListener('focusin', endDrawing, true);
-    const reveals = axes.flatMap(axis => axis.scale.getAnimations());
-    Promise.allSettled(reveals.map(animation => animation.finished)).then(endDrawing);
-  }
+  // The left scale stays visible at every supported viewport width.
+  axes[1].scale.addEventListener('animationend', event => {
+    if (event.animationName === 'draw-ruler') endDrawing();
+  });
+  document.addEventListener('visibilitychange', revealGuides);
+  window.addEventListener('pagehide', endDrawing);
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) revealGuides();
+  });
+  reducedMotion.addEventListener('change', revealGuides);
+  revealGuides();
 })();
