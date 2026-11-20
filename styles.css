@@ -381,21 +381,13 @@ h4 { font-weight: 630; }
   padding-block: 9px;
   color: var(--ink);
   text-decoration: none;
-  transition: opacity 160ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .publication-list:has(a:hover) a:not(:hover):not(:focus-visible) {
-    opacity: 0.3;
+  .publication-list a:hover > span {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
-}
-
-.publication-list:has(a:focus-visible) a:not(:focus-visible):not(:hover) {
-  opacity: 0.3;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .publication-list a { transition: none; }
 }
 
 .text-marker {
