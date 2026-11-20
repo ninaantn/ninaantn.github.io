@@ -48,7 +48,7 @@
 /* Reveal the artwork inside each slider so its full hit area is live from the start. */
 @media (prefers-reduced-motion: no-preference) {
   [data-drawing-guides] {
-    --guide-draw-duration: 2.4s;
+    --guide-draw-duration: 2s;
   }
   [data-drawing-guides] .ruler-scale {
     animation: draw-ruler var(--guide-draw-duration) ease-in-out both;
