@@ -384,9 +384,8 @@ h4 { font-weight: 630; }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .publication-list a:hover > span {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .publication-list a:hover {
+    opacity: 0.3;
   }
 }
 
